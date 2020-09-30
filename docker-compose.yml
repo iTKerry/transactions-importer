@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  api:
+    image: transactions_importer.api
+    container_name: transactions_importer.api
+    networks:
+      - transactions_importer
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: src/TransactionsImporter.Api/Dockerfile
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    container_name: transactions_importer.db
+    networks:
+      - transactions_importer
+
+networks:
+  transactions_importer:
+    name: transactions_importer.network
