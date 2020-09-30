@@ -14,6 +14,7 @@ namespace TransactionsImporter.DataAccess.EF.Configurations
             builder
                 .Property(p => p.Amount)
                 .HasColumnName("Amount")
+                .HasColumnType("float")
                 .IsRequired();
 
             builder.OwnsOne(p => p.TransactionId, x =>

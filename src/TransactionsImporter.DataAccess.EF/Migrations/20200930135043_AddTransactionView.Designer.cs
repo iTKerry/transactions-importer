@@ -10,8 +10,8 @@ using TransactionsImporter.DataAccess.EF;
 namespace TransactionsImporter.DataAccess.EF.Migrations
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20200930121842_Initial")]
-    partial class Initial
+    [Migration("20200930135043_AddTransactionView")]
+    partial class AddTransactionView
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,7 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnName("Code")
                         .HasColumnType("nvarchar(max)");
 
@@ -43,11 +44,11 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount")
+                    b.Property<double>("Amount")
                         .HasColumnName("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("float");
 
-                    b.Property<int?>("CurrencyId")
+                    b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<short>("Status")
@@ -64,7 +65,9 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                 {
                     b.HasOne("TransactionsImporter.DataAccess.Abstractions.Entities.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("TransactionsImporter.DataAccess.Abstractions.ValueObjects.TransactionDate", "TransactionDate", b1 =>
                         {
@@ -93,6 +96,7 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<string>("Value")
+                                .IsRequired()
                                 .HasColumnName("TransactionId")
                                 .HasColumnType("nvarchar(50)");
 

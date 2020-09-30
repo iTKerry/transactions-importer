@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -23,29 +22,31 @@ namespace TransactionsImporter.Api.Controllers
             (Mapper, Mediator, _unitOfWork) =
             (mapper, mediator, unitOfWork);
 
-        protected async Task<IActionResult> FromResult<T>(IHandlerResult<T> result) where T : class
+        protected IActionResult FromResult<T>(IHandlerResult<T> result) where T : class =>
+            result switch
+            {
+                DataHandlerResult<T> d => (IActionResult)Ok(Envelope.Ok(d.Data)),
+                PagedDataHandlerResult<T> pd => (IActionResult) Ok(Envelope.Ok(pd.Data)),
+                ValidationFailedHandlerResult<T> vf => BadRequest(Envelope.Error(vf.Message)),
+                _ => NotFound(Envelope.Error("Not found"))
+            };
+
+        protected async Task<IActionResult> FromResult(IHandlerResult result)
         {
             switch (result)
             {
-                case PagedDataHandlerResult<T> dhr:
+                case OkHandlerResult _:
                     await _unitOfWork.CommitAsync();
-                    return Ok(Envelope.Ok(dhr.Data));
-
-                case ValidationFailedHandlerResult<T> vhr:
+                    return Ok(Envelope.Ok());
+                
+                case ValidationFailedHandlerResult vf:
                     await _unitOfWork.RollbackAsync();
-                    return BadRequest(Envelope.Error(vhr.Message));
-
+                    return BadRequest(Envelope.Error(vf.Message));
+                
                 default:
+                    await _unitOfWork.RollbackAsync();
                     return NotFound(Envelope.Error("Not found"));
             }
         }
-
-        protected IActionResult FromResult(IHandlerResult result) =>
-            result switch
-            {
-                OkHandlerResult _ => Ok(Envelope.Ok()),
-                ValidationFailedHandlerResult vhr => BadRequest(Envelope.Error(vhr.Message)),
-                _ => NotFound(Envelope.Error("Not found"))
-            };
     }
 }

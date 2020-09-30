@@ -5,6 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CSharpFunctionalExtensions" Version="2.11.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TransactionsImporter.DataAccess.Abstractions\TransactionsImporter.DataAccess.Abstractions.csproj" />
+      <ProjectReference Include="..\TransactionsImporter.DataAccess.EF\TransactionsImporter.DataAccess.EF.csproj" />
       <ProjectReference Include="..\TransactionsImporter.MediatR.Core\TransactionsImporter.MediatR.Core.csproj" />
     </ItemGroup>
 

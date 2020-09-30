@@ -31,7 +31,7 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionId = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Amount = table.Column<decimal>(nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
                     CurrencyId = table.Column<int>(nullable: false),
                     TransactionDate = table.Column<DateTime>(nullable: false),
                     Status = table.Column<short>(nullable: false)
@@ -45,7 +45,7 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                         principalSchema: "dbo",
                         principalTable: "Currency",
                         principalColumn: "CurrencyId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

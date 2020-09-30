@@ -4,5 +4,12 @@
         <name>TransactionsImporter.Api</name>
     </assembly>
     <members>
+        <member name="M:TransactionsImporter.Api.Controllers.TransactionsController.GetTransactions(TransactionsImporter.Api.Requests.Transactions.GetTransactionsDto)">
+            <summary>
+            Get transactions
+            </summary>
+            <param name="data">Request params</param>
+            <returns>Transactions</returns>
+        </member>
     </members>
 </doc>

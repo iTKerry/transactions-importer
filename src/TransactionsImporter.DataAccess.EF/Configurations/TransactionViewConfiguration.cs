@@ -11,7 +11,7 @@ namespace TransactionsImporter.DataAccess.EF.Configurations
         {
             builder.ToView(Metadata.Views.TransactionView, Schemas.Dbo).HasNoKey();
 
-            builder.Property(p => p.Id).HasColumnName("TransactionId");
+            builder.Property(p => p.Id).HasColumnName("Id");
             builder.Property(p => p.Amount).HasColumnName("Amount");
             builder.Property(p => p.CurrencyCode).HasColumnName("CurrencyCode");
             builder.Property(p => p.Status).HasColumnName("Status");
