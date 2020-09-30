@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TransactionsImporter.Api.Common;
 using TransactionsImporter.Api.Requests.Transactions;
+using TransactionsImporter.Commands.Transactions.SubmitTransactions;
 using TransactionsImporter.DataAccess.Abstractions.Repositories;
 using TransactionsImporter.MediatR.Core.HandlerResults;
 using TransactionsImporter.Queries.GetTransactions;
@@ -33,6 +35,16 @@ namespace TransactionsImporter.Api.Controllers
             var query = Mapper.Map<GetTransactionsQuery>(data);
             var result = await Mediator.Send(query);
             return FromResult(result);
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(1024 * 1024)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UploadTransactions([FromForm] SubmitTransactionsDto data)
+        {
+            var command = Mapper.Map<SubmitTransactionsCommand>(data);
+            var result = await Mediator.Send(command);
+            return await FromResult(result);
         }
     }
 }
