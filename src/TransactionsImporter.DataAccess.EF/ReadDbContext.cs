@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using TransactionsImporter.Common.Configurations;
 using TransactionsImporter.DataAccess.Abstractions.Views;
 
 namespace TransactionsImporter.DataAccess.EF
@@ -13,11 +15,12 @@ namespace TransactionsImporter.DataAccess.EF
 
         public ReadDbContext(
             IHostEnvironment environment,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IOptions<ConnectionStrings> connectionStringsOptions)
         {
             _environment = environment;
             _loggerFactory = loggerFactory;
-            _dbConnectionString = null;
+            _dbConnectionString = connectionStringsOptions.Value.TransactionsImporterDb;
         }
 
         public DbSet<TransactionView> TransactionViews { get; set; }

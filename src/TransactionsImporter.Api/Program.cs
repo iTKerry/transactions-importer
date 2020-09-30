@@ -1,17 +1,51 @@
+using System;
+using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using TransactionsImporter.Api.Extensions.Host;
+using TransactionsImporter.DataAccess.EF;
 
 namespace TransactionsImporter.Api
 {
-    public class Program
+    public static class Program
     {
-        public static void Main(string[] args)
+        public static Task Main(string[] args) =>
+            RunAsync(CreateHostBuilder(args).Build());
+
+        private static async Task RunAsync(IHost host)
         {
-            CreateHostBuilder(args).Build().Run();
+            Log.Logger = BuildLogger(host);
+
+            try
+            {
+                Log.Information("Starting web host");
+                await host.MigrateDatabaseAsync<WriteDbContext>();
+                await host.RunAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+                throw;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .UseSerilog()
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(hostBuilder => hostBuilder.UseStartup<Startup>());
+
+        private static ILogger BuildLogger(IHost host) =>
+            new LoggerConfiguration()
+                .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
+                .CreateLogger();
     }
 }

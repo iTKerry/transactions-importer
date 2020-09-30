@@ -1,41 +1,51 @@
+using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Serilog;
+using TransactionsImporter.Api.Extensions.ApplicationBuilder;
+using TransactionsImporter.Api.Extensions.ServiceCollection;
 
 namespace TransactionsImporter.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly IConfiguration _cfg;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration) =>
+            _cfg = configuration;
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-        }
+        public void ConfigureServices(IServiceCollection services) =>
+            services.AddOptions()
+                .AddAutoMapper(typeof(Startup).Assembly)
+                .AddTransactionsImporterConfigurations(_cfg)
+                .AddTransactionsImporterCompression()
+                .AddTransactionsImporterMvc()
+                .AddTransactionsImporterProfiler()
+                .AddTransactionsImporterDb()
+                .AddMemoryCache()
+                .AddTransactionsImporterCors()
+                .AddRouteOptions()
+                .AddTransactionsImporterHealthChecks()
+                .AddTransactionsImporterSwagger();
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+        public void ConfigureContainer(ContainerBuilder builder) =>
+            builder.RegisterAssemblyModules(typeof(Startup).Assembly);
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
+            app.UseExceptionHandler(env)
+                .UseStaticFiles()
+                .UseTransactionsImporterUi()
+                .UseSerilogRequestLogging()
+                .UseCors()
+                .UseAuthentication()
+                .UseRouting()
+                .UseEndpoints(e =>
+                {
+                    e.MapControllers();
+                    e.MapHealthChecks("/_health");
+                });
     }
 }

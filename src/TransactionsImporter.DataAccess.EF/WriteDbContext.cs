@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using TransactionsImporter.Common.Configurations;
 using TransactionsImporter.DataAccess.Abstractions.Entities;
 
 namespace TransactionsImporter.DataAccess.EF
@@ -20,11 +22,14 @@ namespace TransactionsImporter.DataAccess.EF
         private readonly ILoggerFactory _loggerFactory;
         private readonly string _dbConnectionString;
 
-        public WriteDbContext(IHostEnvironment environment, ILoggerFactory loggerFactory)
+        public WriteDbContext(
+            IHostEnvironment environment, 
+            ILoggerFactory loggerFactory,
+            IOptions<ConnectionStrings> connectionStringsOptions)
         {
             _environment = environment;
             _loggerFactory = loggerFactory;
-            _dbConnectionString = null;
+            _dbConnectionString = connectionStringsOptions.Value.TransactionsImporterDb;
         }
 
         public DbSet<Transaction> Transactions { get; set; }
