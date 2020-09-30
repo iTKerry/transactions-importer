@@ -6,6 +6,10 @@ namespace TransactionsImporter.DataAccess.Abstractions.ValueObjects
 {
     public class TransactionDate : ValueObject<TransactionDate>
     {
+        protected TransactionDate()
+        {
+        }
+
         private TransactionDate(DateTime value) => 
             Value = value;
 

@@ -37,7 +37,7 @@ namespace TransactionsImporter.DataAccess.EF
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            if (_environment.IsDevelopment() || _environment.IsStaging())
+            if (_environment != null && (_environment.IsDevelopment() || _environment.IsStaging()))
                 builder
                     .UseLoggerFactory(_loggerFactory)
                     .EnableSensitiveDataLogging();

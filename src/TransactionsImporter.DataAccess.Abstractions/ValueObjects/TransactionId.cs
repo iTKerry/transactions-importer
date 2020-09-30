@@ -4,6 +4,10 @@ namespace TransactionsImporter.DataAccess.Abstractions.ValueObjects
 {
     public class TransactionId : ValueObject<TransactionId>
     {
+        protected TransactionId()
+        {
+        }
+
         private TransactionId(string value) => 
             Value = value;
 
