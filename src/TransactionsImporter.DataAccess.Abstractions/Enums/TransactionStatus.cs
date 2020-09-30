@@ -2,17 +2,17 @@
 
 namespace TransactionsImporter.DataAccess.Abstractions.Enums
 {
-    public enum TransactionStatus
+    public enum TransactionStatus : short
     {
         [TransactionStatusDisplay("Approved")]
-        A,
+        A = 0,
         
         [TransactionStatusDisplay("Failed")]
         [TransactionStatusDisplay("Rejected")]
-        R,
+        R = 1,
         
         [TransactionStatusDisplay("Finished")]
         [TransactionStatusDisplay("Done")]
-        D
+        D = 2
     }
 }
