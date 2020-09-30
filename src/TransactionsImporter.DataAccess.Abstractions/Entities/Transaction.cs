@@ -12,37 +12,37 @@ namespace TransactionsImporter.DataAccess.Abstractions.Entities
         private Transaction(
             TransactionId id, 
             decimal amount,
-            CurrencyCode currencyCode,
+            Currency currency,
             TransactionDate date, 
             TransactionStatus status)
         {
             TransactionId = id;
             Amount = amount;
-            CurrencyCode = currencyCode;
+            Currency = currency;
             TransactionDate = date;
             Status = status;
         }
 
         public virtual TransactionId TransactionId { get; private set; }
         public decimal Amount { get; private set; }
-        public virtual CurrencyCode CurrencyCode { get; private set; }
+        public virtual Currency Currency { get; private set; }
         public virtual TransactionDate TransactionDate { get; private set; }
         public TransactionStatus Status { get; private set; }
 
         public static Result<Transaction> Create(
             Maybe<TransactionId> maybeId, 
             decimal amount,
-            Maybe<CurrencyCode> maybeCurrencyCode,
+            Maybe<Currency> maybeCurrency,
             Maybe<TransactionDate> maybeDate,
             TransactionStatus status)
         {
             var idResult = maybeId.ToResult("TransactionIdentifier is null.");
-            var currencyCodeResult = maybeCurrencyCode.ToResult("CurrencyCode is null");
+            var currencyResult = maybeCurrency.ToResult("Currency is null");
             var dateResult = maybeDate.ToResult("TransactionDate is null.");
 
             return Result
                 .Combine(idResult, dateResult)
-                .Map(() => new Transaction(idResult.Value, amount, currencyCodeResult.Value, dateResult.Value, status));
+                .Map(() => new Transaction(idResult.Value, amount, currencyResult.Value, dateResult.Value, status));
         }
     }
 }
