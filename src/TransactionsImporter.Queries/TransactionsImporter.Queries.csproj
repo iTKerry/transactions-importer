@@ -4,4 +4,8 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TransactionsImporter.MediatR.Core\TransactionsImporter.MediatR.Core.csproj" />
+    </ItemGroup>
+
 </Project>
