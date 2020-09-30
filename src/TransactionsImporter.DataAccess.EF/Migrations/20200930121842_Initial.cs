@@ -16,7 +16,7 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                 columns: table => new
                 {
                     CurrencyId = table.Column<int>(nullable: false),
-                    Code = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,10 +30,10 @@ namespace TransactionsImporter.DataAccess.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionId = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    TransactionId = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
-                    CurrencyId = table.Column<int>(nullable: true),
-                    TransactionDate = table.Column<DateTime>(nullable: true),
+                    CurrencyId = table.Column<int>(nullable: false),
+                    TransactionDate = table.Column<DateTime>(nullable: false),
                     Status = table.Column<short>(nullable: false)
                 },
                 constraints: table =>
