@@ -11,19 +11,30 @@ namespace TransactionsImporter.DataAccess.EF.Configurations
         {
             builder.ToTable(Tables.Transaction, Schemas.Dbo).HasKey(p => p.Id);
 
-            builder.Property(p => p.Amount).HasColumnName("Amount");
+            builder
+                .Property(p => p.Amount)
+                .HasColumnName("Amount")
+                .IsRequired();
 
             builder.OwnsOne(p => p.TransactionId, x =>
             {
-                x.Property(p => p.Value).HasColumnName("TransactionId").HasColumnType("nvarchar(50)");
+                x.Property(p => p.Value)
+                    .HasColumnName("TransactionId")
+                    .HasColumnType("nvarchar(50)")
+                    .IsRequired();
             });
 
             builder.OwnsOne(p => p.TransactionDate, x =>
             {
-                x.Property(p => p.Value).HasColumnName("TransactionDate");
+                x.Property(p => p.Value)
+                    .HasColumnName("TransactionDate")
+                    .IsRequired();
             });
 
-            builder.HasOne(p => p.Currency).WithMany();
+            builder
+                .HasOne(p => p.Currency)
+                .WithMany()
+                .IsRequired();
         }
     }
 }

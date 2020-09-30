@@ -11,8 +11,15 @@ namespace TransactionsImporter.DataAccess.EF.Configurations
         {
             builder.ToTable(Tables.Currency, Schemas.Dbo).HasKey(p => p.Id);
             
-            builder.Property(p => p.Id).HasColumnName("CurrencyId").ValueGeneratedNever();
-            builder.Property(p => p.Code).HasColumnName("Code");
+            builder
+                .Property(p => p.Id)
+                .HasColumnName("CurrencyId")
+                .ValueGeneratedNever();
+
+            builder
+                .Property(p => p.Code)
+                .HasColumnName("Code")
+                .IsRequired();
         }
     }
 }
