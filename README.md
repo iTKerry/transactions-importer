@@ -1,4 +1,4 @@
-# transactions-importer
+# Transactions Importer
 ## Run
 
 ```bash
