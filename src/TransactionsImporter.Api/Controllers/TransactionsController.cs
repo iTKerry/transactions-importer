@@ -36,10 +36,15 @@ namespace TransactionsImporter.Api.Controllers
             return FromResult(result);
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Transactions submission 
+        /// </summary>
+        /// <param name="data">File that contains transactions. Should be XML or CSV format.</param>
+        /// <returns>OK</returns>
+        [HttpPost("submit")]
         [RequestSizeLimit(1024 * 1024)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UploadTransactions([FromForm] SubmitTransactionsDto data)
+        public async Task<IActionResult> SubmitTransactions([FromForm] SubmitTransactionsDto data)
         {
             var command = Mapper.Map<SubmitTransactionsCommand>(data);
             var result = await Mediator.Send(command);
