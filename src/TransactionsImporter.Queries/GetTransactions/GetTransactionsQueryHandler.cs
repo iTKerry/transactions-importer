@@ -30,8 +30,8 @@ namespace TransactionsImporter.Queries.GetTransactions
             Expression<Func<TransactionView, bool>> wherePredicate = view => 
                 (string.IsNullOrEmpty(request.CurrencyCode) || view.CurrencyCode == request.CurrencyCode) &&
                 (request.Status == null || view.Status == request.Status) &&
-                (request.DateFrom == null || request.DateFrom >= view.Time) &&
-                (request.DateTo == null || request.DateTo <= view.Time);
+                (request.DateFrom == null || request.DateFrom <= view.Time) &&
+                (request.DateTo == null || request.DateTo >= view.Time);
 
             var queryParams = new QueryParams<TransactionView>
             {

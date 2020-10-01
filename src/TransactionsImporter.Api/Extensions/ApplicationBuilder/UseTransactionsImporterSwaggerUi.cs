@@ -7,7 +7,7 @@ namespace TransactionsImporter.Api.Extensions.ApplicationBuilder
 {
     public static partial class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseTransactionsImporterUi(this IApplicationBuilder appBuilder) =>
+        public static IApplicationBuilder UseTransactionsImporterUi(this IApplicationBuilder appBuilder) => 
             appBuilder
                 .UseSwagger()
                 .UseSwaggerUI(SetupSwaggerUiOptions);

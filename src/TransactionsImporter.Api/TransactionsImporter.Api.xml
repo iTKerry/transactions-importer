@@ -11,5 +11,12 @@
             <param name="data">Request params</param>
             <returns>Transactions</returns>
         </member>
+        <member name="M:TransactionsImporter.Api.Controllers.TransactionsController.SubmitTransactions(TransactionsImporter.Api.Requests.Transactions.SubmitTransactionsDto)">
+            <summary>
+            Transactions submission 
+            </summary>
+            <param name="data">File that contains transactions. Should be XML or CSV format.</param>
+            <returns>OK</returns>
+        </member>
     </members>
 </doc>
