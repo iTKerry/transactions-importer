@@ -6,6 +6,7 @@ using CSharpFunctionalExtensions;
 using TransactionsImporter.Application.Abstractions;
 using TransactionsImporter.Commands.Abstractions;
 using TransactionsImporter.DataAccess.Abstractions.Repositories;
+using TransactionsImporter.Domain.Abstractions;
 using TransactionsImporter.MediatR.Core.Abstractions;
 
 namespace TransactionsImporter.Commands.Transactions.SubmitTransactions
@@ -17,13 +18,16 @@ namespace TransactionsImporter.Commands.Transactions.SubmitTransactions
 
         private readonly ITransactionsRepository _repository;
         private readonly ITransactionsReader _reader;
+        private readonly ITransactionsMapper _mapper;
 
         public SubmitTransactionsCommandHandler(
             ITransactionsRepository repository, 
-            ITransactionsReader reader)
+            ITransactionsReader reader, 
+            ITransactionsMapper mapper)
         {
             _repository = repository;
             _reader = reader;
+            _mapper = mapper;
         }
 
         public override async Task<IHandlerResult> Handle(
@@ -35,8 +39,14 @@ namespace TransactionsImporter.Commands.Transactions.SubmitTransactions
                 return ValidationFailed(validationResult.Error);
 
             var fileTransactions = _reader.Read(request.File);
+            var transactionsResult = _mapper.Map(fileTransactions);
 
-            throw new System.NotImplementedException();
+            if (transactionsResult.IsFailure)
+                return ValidationFailed(transactionsResult.Error);
+
+            _repository.SaveRange(transactionsResult.Value);
+
+            return await Task.FromResult(Ok());
         }
 
         private Result ValidateRequest(SubmitTransactionsCommand request) =>

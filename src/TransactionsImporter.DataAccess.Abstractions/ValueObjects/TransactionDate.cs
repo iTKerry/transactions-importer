@@ -24,7 +24,7 @@ namespace TransactionsImporter.DataAccess.Abstractions.ValueObjects
                 _ when TryParseDate(date, "dd/MM/yyyy hh:mm:ss", out var result) => 
                     Result.Success(new TransactionDate(result)),
                 
-                _ when TryParseDate(date, "yyyy-MM-ddThh:mm:ss", out var result) => 
+                _ when TryParseDate(date, "yyyy-MM-dd'T'hh:mm:ss", out var result) => 
                     Result.Success(new TransactionDate(result)),
                 
                 _ => Result.Failure<TransactionDate>($"Invalid transaction date format: {date}") 

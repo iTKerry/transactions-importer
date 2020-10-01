@@ -12,6 +12,7 @@
       <ProjectReference Include="..\TransactionsImporter.Application\TransactionsImporter.Application.csproj" />
       <ProjectReference Include="..\TransactionsImporter.DataAccess.Abstractions\TransactionsImporter.DataAccess.Abstractions.csproj" />
       <ProjectReference Include="..\TransactionsImporter.DataAccess.EF\TransactionsImporter.DataAccess.EF.csproj" />
+      <ProjectReference Include="..\TransactionsImporter.Domain\TransactionsImporter.Domain.csproj" />
       <ProjectReference Include="..\TransactionsImporter.MediatR.Core\TransactionsImporter.MediatR.Core.csproj" />
     </ItemGroup>
 
