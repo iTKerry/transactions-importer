@@ -28,7 +28,7 @@ namespace TransactionsImporter.Api.Controllers
         /// <param name="data">Request params</param>
         /// <returns>Transactions</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(Envelope<DataHandlerResult<List<TransactionsDto>>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Envelope<PagedDataHandlerResult<List<TransactionsDto>>>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTransactions([FromQuery] GetTransactionsDto data)
         {
             var query = Mapper.Map<GetTransactionsQuery>(data);

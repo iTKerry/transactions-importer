@@ -53,8 +53,18 @@ namespace TransactionsImporter.DataAccess.EF.Abstractions
 
             if (projectedQueryParams.Top != 0)
                 projectedQuery = projectedQuery.Take(projectedQueryParams.Top);
-            
+             
             return await projectedQuery.ToListAsync(cancellationToken);
+        }
+
+        public Task<int> CountAsync(
+            Expression<Func<TView, bool>> wherePredicate, 
+            CancellationToken cancellationToken = default)
+        {
+            return Ctx.Set<TView>()
+                .AsNoTracking()
+                .Where(wherePredicate)
+                .CountAsync(cancellationToken);
         }
 
         public Task<int> CountAsync<TResult>(

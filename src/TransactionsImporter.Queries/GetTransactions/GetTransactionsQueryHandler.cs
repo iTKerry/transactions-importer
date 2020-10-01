@@ -39,9 +39,10 @@ namespace TransactionsImporter.Queries.GetTransactions
             };
 
             var data = await _repository.GetAllAsync(queryParams, cancellationToken);
+            var count = await _repository.CountAsync(wherePredicate, cancellationToken);
             var result = data.Select(MappingProjection).ToList();
 
-            return Data(result);
+            return PagedData(result, count);
         }
 
         private static TransactionsDto MappingProjection(TransactionView view) => 
