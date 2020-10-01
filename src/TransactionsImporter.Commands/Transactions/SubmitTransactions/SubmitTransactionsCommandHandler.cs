@@ -59,7 +59,7 @@ namespace TransactionsImporter.Commands.Transactions.SubmitTransactions
                     Result.Failure("Invalid file size."),
 
                 _ when !_allowedExtensions.Contains(Path.GetExtension(request.File.FileName)) => 
-                    Result.Failure($"Invalid file type: {Path.GetExtension(request.File.FileName)}. Should be csv or xml."),
+                    Result.Failure($"Unknown format: {Path.GetExtension(request.File.FileName)}. Should be csv or xml."),
 
                 _ => Result.Success()
             };
