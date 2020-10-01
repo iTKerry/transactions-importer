@@ -1,14 +1,14 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace TransactionsImporter.Application.Readers.XmlReader.FileData
 {
+    [XmlType(AnonymousType = true)]
     public class XmlTransaction
     {
-        [XmlAttribute]
+        [XmlAttribute("id")]
         public string Id { get; set; }
 
-        public DateTime? TransactionDate { get; set; }
+        public string TransactionDate { get; set; }
         public XmlPaymentDetails PaymentDetails { get; set; }
         public string Status { get; set; }
     }

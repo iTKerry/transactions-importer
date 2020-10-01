@@ -19,7 +19,7 @@ namespace TransactionsImporter.Application.Readers.XmlReader
 
             return xmlTransactions.Transactions.Select(MappingProjection).ToList();
         }
-
+        
         private static FileTransactionDto MappingProjection(XmlTransaction xml) =>
             new FileTransactionDto
             {

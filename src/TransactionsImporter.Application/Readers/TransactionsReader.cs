@@ -8,7 +8,7 @@ using TransactionsImporter.Application.Readers.XmlReader;
 
 namespace TransactionsImporter.Application.Readers
 {
-    public class TransactionsFileReader : ITransactionsReader
+    public class TransactionsReader : ITransactionsReader
     {
         public List<FileTransactionDto> Read(IFormFile file)
         {

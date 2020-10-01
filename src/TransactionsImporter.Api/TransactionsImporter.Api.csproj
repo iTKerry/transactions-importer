@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TransactionsImporter.Application\TransactionsImporter.Application.csproj" />
     <ProjectReference Include="..\TransactionsImporter.Commands\TransactionsImporter.Commands.csproj" />
     <ProjectReference Include="..\TransactionsImporter.Common\TransactionsImporter.Common.csproj" />
     <ProjectReference Include="..\TransactionsImporter.DataAccess.EF\TransactionsImporter.DataAccess.EF.csproj" />
