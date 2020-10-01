@@ -10,12 +10,10 @@ namespace TransactionsImporter.Application.Readers
 {
     public class TransactionsReader : ITransactionsReader
     {
-        public List<FileTransactionDto> Read(IFormFile file)
-        {
-            var fileType = Path.GetExtension(file.FileName);
-            return fileType switch
+        public List<FileTransactionDto> Read(IFormFile file) =>
+            Path.GetExtension(file.FileName) switch
             {
-                _ when string.IsNullOrEmpty(fileType) => 
+                var fileType when string.IsNullOrEmpty(fileType) => 
                     throw new ArgumentNullException(nameof(fileType)),
                 
                 ".csv" =>  new TransactionsCsvReader().ReadFile(file),
@@ -24,6 +22,5 @@ namespace TransactionsImporter.Application.Readers
 
                 _ => throw new InvalidOperationException()
             };
-        }
     }
 }
